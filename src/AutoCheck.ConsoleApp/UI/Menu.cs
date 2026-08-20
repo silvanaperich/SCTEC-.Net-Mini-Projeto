@@ -1,4 +1,6 @@
 using AutoCheck.ConsoleApp.Helpers;
+using AutoCheck.ConsoleApp.Models;
+using AutoCheck.ConsoleApp.Services;
 
 namespace AutoCheck.ConsoleApp.UI
 {
@@ -7,7 +9,8 @@ namespace AutoCheck.ConsoleApp.UI
         public void Executar()
         {
             string opcaoEscolhida;
-
+            List<Veiculo> listaVeiculos = new List<Veiculo>();
+            MotorVistoria motor = new MotorVistoria();
 
             Funcoes.ExibirCabecalho("AUTOCHECK .NET - MOTOR DE VISTORIA VEICULAR");
 
@@ -24,12 +27,11 @@ namespace AutoCheck.ConsoleApp.UI
                 switch (opcaoEscolhida)
                 {
                     case "1":
-                        //RealizarNovaVistoria();
-                        Console.WriteLine("RealizarNovaVistoria");
+                        Veiculo veiculoAdicionado = motor.RealizarNovaVistoria();
+                        listaVeiculos.Add(veiculoAdicionado);
                         break;
                     case "2":
-                        //ExibirRelatorio();
-                        Console.WriteLine("ExibirRelatorio");
+                        motor.ExibirRelatorio(listaVeiculos);
                         break;
                     case "0":
                         Funcoes.ExibirCabecalho("AUTOCHECK .NET - SISTEMA ENCERRADO...");
