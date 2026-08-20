@@ -1,3 +1,5 @@
+using AutoCheck.ConsoleApp.Helpers;
+
 namespace AutoCheck.ConsoleApp.Models
 {
     public class Caminhao : Veiculo
@@ -18,6 +20,18 @@ namespace AutoCheck.ConsoleApp.Models
             checklist.Add("Sistema de Freios a Ar");
             checklist.Add("Trava e Lona da Caçamba");
             return checklist;
+        }
+
+        protected override void ExibirTipoVeiculo()
+        {
+            Funcoes.ExibirTextoComIndentacaoUmNivel("Tipo: Caminhão");
+        }
+
+        public override void ExibirDadosCadastro()
+        {
+            base.ExibirDadosCadastro();
+            Funcoes.ExibirTextoComIndentacaoUmNivel($"Quantidade de eixos: {this.QuantidadeEixos}");
+            Funcoes.ExibirTextoComIndentacaoUmNivel($"Capacidade: {this.CapacidadeCargaToneladas:D1} ton");
         }
         
     }

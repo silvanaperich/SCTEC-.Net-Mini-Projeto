@@ -33,6 +33,11 @@ namespace AutoCheck.ConsoleApp.Helpers
             CentralizarTexto(titulo.ToUpper(), quantidadeCaracteresPorLinha);
             ExibirLinhaDivisoria('-');
         }
+        
+        public static void ExibirTextoComIndentacaoUmNivel(string texto)
+        {
+            Console.WriteLine($"   {texto}");
+        }
 
         public static string SolicitarValorTexto(string texto)
         {
@@ -51,7 +56,7 @@ namespace AutoCheck.ConsoleApp.Helpers
             Console.Write($"{texto}");
             string textoDigitado = Console.ReadLine();
             int inteiro;
-            while (int.TryParse(textoDigitado.Trim(), out inteiro))
+            while (!int.TryParse(textoDigitado.Trim(), out inteiro))
             {
                 Console.Write("Obrigatório informar um valor numérico inteiro! Digite novamente: ");
                 textoDigitado = Console.ReadLine();
@@ -64,7 +69,7 @@ namespace AutoCheck.ConsoleApp.Helpers
             Console.Write($"{texto}");
             string textoDigitado = Console.ReadLine();
             double numero;
-            while (double.TryParse(textoDigitado.Trim(), out numero))
+            while (!double.TryParse(textoDigitado.Trim(), out numero))
             {
                 Console.Write("Obrigatório informar um valor numérico inteiro ou decimal! Digite novamente: ");
                 textoDigitado = Console.ReadLine();

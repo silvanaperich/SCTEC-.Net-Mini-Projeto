@@ -1,3 +1,5 @@
+using AutoCheck.ConsoleApp.Helpers;
+
 namespace AutoCheck.ConsoleApp.Models
 {
     public abstract class Veiculo
@@ -27,6 +29,18 @@ namespace AutoCheck.ConsoleApp.Models
         public virtual List<string> ObterChecklistObrigatorio()
         {
             return new List<string>() {"Nível de Óleo do Motor", "Bateria e Sistema Elétrico", "Documentação Regularizada"};
+        }
+
+        protected abstract void ExibirTipoVeiculo();
+
+        public virtual void ExibirDadosCadastro()
+        {
+            Console.WriteLine("DADOS DO VEÍCULO:");
+            this.ExibirTipoVeiculo(); 
+            Funcoes.ExibirTextoComIndentacaoUmNivel($"Marca: {this.Marca}");
+            Funcoes.ExibirTextoComIndentacaoUmNivel($"Modelo: {this.Modelo}");
+            Funcoes.ExibirTextoComIndentacaoUmNivel($"Ano: {this.Ano}");
+            Funcoes.ExibirTextoComIndentacaoUmNivel($"Quilometragem: {this.Quilometragem}");
         }
     }
 }

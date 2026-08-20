@@ -104,7 +104,17 @@ namespace AutoCheck.ConsoleApp.Services
 
         public void ExibirRelatorio(List<Veiculo> veiculos)
         {
-            Console.WriteLine("implementacao pendente...");
+            Console.WriteLine("");
+            Funcoes.ExibirCabecalho("RELATÓRIO DE VISTORIA(S)");
+
+            int item = 1;
+            foreach (Veiculo veiculo in veiculos) {
+                Console.WriteLine($"[{item}/{veiculos.Count}] PROCESSANDO VISTORIA");
+                Funcoes.ExibirLinhaDivisoriaSimples();
+                veiculo.ExibirDadosCadastro();
+                item++;
+            }
+
         }
     }
 }

@@ -1,3 +1,5 @@
+using AutoCheck.ConsoleApp.Helpers;
+
 namespace AutoCheck.ConsoleApp.Models
 {
     public class Moto : Veiculo
@@ -16,6 +18,17 @@ namespace AutoCheck.ConsoleApp.Models
             checklist.Add("Manetes de Freio/Embreagem");
             checklist.Add("Pezinho Lateral");
             return checklist;
+        }
+        
+        protected override void ExibirTipoVeiculo()
+        {
+            Funcoes.ExibirTextoComIndentacaoUmNivel("Tipo: Moto");
+        }
+
+        public override void ExibirDadosCadastro()
+        {
+            base.ExibirDadosCadastro();
+            Funcoes.ExibirTextoComIndentacaoUmNivel($"Motor: {this.Cilindradas} cc");
         }
         
     }

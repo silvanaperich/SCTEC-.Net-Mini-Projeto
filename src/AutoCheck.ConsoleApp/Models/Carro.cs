@@ -1,3 +1,5 @@
+using AutoCheck.ConsoleApp.Helpers;
+
 namespace AutoCheck.ConsoleApp.Models
 {
     public class Carro : Veiculo
@@ -16,6 +18,17 @@ namespace AutoCheck.ConsoleApp.Models
             checklist.Add("Triângulo de Sinalização");
             checklist.Add("Ar Condicionado Funcional");
             return checklist;
+        }
+        
+        protected override void ExibirTipoVeiculo()
+        {
+            Funcoes.ExibirTextoComIndentacaoUmNivel("Tipo: Carro");
+        }
+
+        public override void ExibirDadosCadastro()
+        {
+            base.ExibirDadosCadastro();
+            Funcoes.ExibirTextoComIndentacaoUmNivel($"Portas: {this.QuantidadePortas}");
         }
     }
 }
