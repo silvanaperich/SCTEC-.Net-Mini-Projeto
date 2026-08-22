@@ -25,6 +25,21 @@ namespace AutoCheck.ConsoleApp.Models
             base.ExibirDadosCadastro();
             Funcoes.ExibirTextoComIndentacaoUmNivel($"Motor: {this.Cilindradas} cc");
         }
+
+        public override string RetornarRecomendacaoItemConformeStatus(string item, string status)
+        {
+            switch (item)
+            {
+                case "Kit Transmissão/Corrente":
+                    return (status == "Ruim") ? "Trocar imediatamente o kit transmissão (corrente folgada, coroa e pinhão gastos)" : "Ajustar a tensão da corrente, realizar limpeza e aplicar lubrificante próprio";
+                case "Manetes de Freio/Embreagem":
+                    return (status == "Ruim") ? "Trocar manetes quebrados/empenados e regular folga do cabo/sistema hidráulico" : "Ajustar a folga dos cabos e lubrificar as articulações dos manetes";
+                case "Pezinho Lateral":
+                    return (status == "Ruim") ? "Substituir mola de retorno quebrada ou pezinho empenado (risco de queda)" : "Reapertar parafusos de fixação e aplicar desingripante na articulação";
+                default:
+                    return base.RetornarRecomendacaoItemConformeStatus(item, status);
+            }
+        }
         
     }
 }

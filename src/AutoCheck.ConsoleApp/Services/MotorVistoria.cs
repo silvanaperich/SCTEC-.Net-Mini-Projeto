@@ -142,19 +142,19 @@ namespace AutoCheck.ConsoleApp.Services
 
             int item = 1;
             foreach (Veiculo veiculo in veiculos) {
+                Funcoes.ExibirLinhaDivisoriaSimples();
                 Console.WriteLine($"[{item}/{veiculos.Count}] PROCESSANDO VISTORIA");
                 Funcoes.ExibirLinhaDivisoriaSimples();
+                
                 veiculo.ExibirDadosCadastro();
-                
-                Console.WriteLine("");
-                veiculo.ExibirDadosItensInspecionados();
-                
-                Console.WriteLine("");
+                veiculo.ExibirDadosItensInspecionados();                
                 veiculo.ExibirDadosResumoPontuacao();
+                veiculo.ExibirDadosManutencaoRecomendacao();
 
                 item++;
             }
 
+            Funcoes.ExibirCabecalho("FIM DO PROCESSAMENTO DE VISTORIAS");
         }
     }
 }

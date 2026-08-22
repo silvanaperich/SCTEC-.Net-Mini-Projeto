@@ -41,13 +41,16 @@ namespace AutoCheck.ConsoleApp.Models
             Funcoes.ExibirTextoComIndentacaoUmNivel($"Quilometragem: {this.Quilometragem}");
         }
         
-        public virtual void ExibirDadosItensInspecionados()
+        public void ExibirDadosItensInspecionados()
         {
+            Console.WriteLine("");
             Console.WriteLine($"AVALIAÇÃO DOS ITENS INSPECIONADOS ({this.VistoriaRealizada.Count} ITENS):");
             Funcoes.ExibirTextoFormatadoEstiloSumario("Item", "Status", ' ');
             foreach (ItemVistoria item in this.VistoriaRealizada)
             {
-                Funcoes.ExibirTextoFormatadoEstiloSumario(item.Nome, $"{item.Status} ({item.RetornarPontosPeloStatus()} pts)", '.');
+                string textoItem = $"{Funcoes.RetornarEmojiConformeStatus(item.Status)} {item.Nome}";
+                string textoStatus = $"{item.Status} ({item.RetornarPontosPeloStatus()} pts)";
+                Funcoes.ExibirTextoFormatadoEstiloSumario(textoItem, textoStatus, '.');
             }
         }
 
@@ -63,8 +66,21 @@ namespace AutoCheck.ConsoleApp.Models
                     return "REPROVADO NA VISTORIA";
             }
         }
+
+        private string RetornarAcaoCorporativa(double percentual)
+        {
+            switch (percentual)
+            {
+                case >= 90:
+                    return "Liberado para compra/revenda imediata";
+                case >= 60:
+                    return "Exige desconto na compra para reparos da oficina";
+                default:
+                    return "Veículo recusado pela concessionária";
+            }
+        }
         
-        public virtual void ExibirDadosResumoPontuacao()
+        public void ExibirDadosResumoPontuacao()
         {
             int pontuacaoMaximaPossivel = this.VistoriaRealizada.Count * 10;
             int pontuacaoObtida = 0;
@@ -76,12 +92,91 @@ namespace AutoCheck.ConsoleApp.Models
 
             double percentual = (double)pontuacaoObtida / pontuacaoMaximaPossivel * 100;
 
-            string classificacao = RetornarClassificacaoFinal(percentual);            
+            string classificacao = RetornarClassificacaoFinal(percentual);  
+            string acaoCorporativa = RetornarAcaoCorporativa(percentual);            
 
+            Console.WriteLine("");
             Console.WriteLine("RESUMO DA PONTUAÇÃO:");
             Funcoes.ExibirTextoFormatadoEstiloSumario("Pontuação Atingida", $"{pontuacaoObtida} de {pontuacaoMaximaPossivel} pontos possíveis", '.');
             Funcoes.ExibirTextoFormatadoEstiloSumario("Percentual de Aprovação:", $"{percentual:F1}%", '.');
             Funcoes.ExibirTextoFormatadoEstiloSumario("Classificação Final:", classificacao, '.');
+            Funcoes.ExibirTextoFormatadoEstiloSumario("Ação Corporativa:", acaoCorporativa, '.');
+        }
+
+        private bool VerificarExisteItemVistoriaPeloStatus(string status)
+        {
+            foreach (ItemVistoria item in this.VistoriaRealizada)
+            {
+                if (item.Status == status)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public virtual string RetornarRecomendacaoItemConformeStatus(string item, string status)
+        {
+            switch (item)
+            {
+                case "Nível de Óleo do Motor":
+                    return (status == "Ruim") ? "Completar óleo imediatamente e checar possíveis vazamentos no cárter" : "Agendar troca preventiva de óleo e filtro nos próximos 1.000 km";
+                case "Bateria e Sistema Elétrico":
+                    return (status == "Ruim") ? "Substituir bateria com falha de carga e testar o alternador" : "Limpar terminais (descarbonização) e monitorar a tensão na partida";
+                case "Documentação Regularizada":
+                    return (status == "Ruim") ? "Regularizar IPVA e licenciamento vencido antes de circular" : "Verificar prazo de vencimento da taxa de licenciamento para o próximo mês";
+                default:
+                    return string.Empty;
+            }
+        }
+
+        public void ExibirDadosManutencaoRecomendacao()
+        {
+            bool contemItemStatusRuim = VerificarExisteItemVistoriaPeloStatus("Ruim");
+            bool contemItemStatusRegular = VerificarExisteItemVistoriaPeloStatus("Regular");
+
+            Console.WriteLine("");
+            Console.WriteLine("RELATÓRIO DE MANUTENÇÃO E RECOMENDAÇÕES DA OFICINA:");
+            Console.WriteLine("");
+
+            if (!contemItemStatusRegular & !contemItemStatusRuim)
+            {
+                Console.WriteLine("🟢 Nenhuma pendência mecânica identificada. Veículo liberado para operação!");  
+                Console.WriteLine("");
+                return;
+            }          
+
+            if (contemItemStatusRuim){
+                Console.WriteLine("🔴 ITENS CRÍTICOS / REPROVADOS (AÇÃO IMEDIATA):");  
+
+                foreach (ItemVistoria item in this.VistoriaRealizada)
+                {
+                    if (item.Status == "Ruim")
+                    {
+                        string recomendacao = RetornarRecomendacaoItemConformeStatus(item.Nome, "Ruim");
+                        Console.WriteLine($"{item.Nome}:");
+                        Funcoes.ExibirTextoComIndentacaoUmNivel($"{recomendacao}.");
+                    }
+                }
+
+                Console.WriteLine("");
+            }     
+
+            if (contemItemStatusRegular){
+                Console.WriteLine("🟡 ITENS DE ATENÇÃO (REVISÃO PREVENTIVA):");  
+
+                foreach (ItemVistoria item in this.VistoriaRealizada)
+                {
+                    if (item.Status == "Regular")
+                    {
+                        string recomendacao = RetornarRecomendacaoItemConformeStatus(item.Nome, "Regular");
+                        Console.WriteLine($"{item.Nome}:");
+                        Funcoes.ExibirTextoComIndentacaoUmNivel($"{recomendacao}.");
+                    }
+                }
+
+                Console.WriteLine("");
+            }
         }
     }
 }

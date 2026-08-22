@@ -2,7 +2,7 @@ namespace AutoCheck.ConsoleApp.Helpers
 {
     public static class Funcoes
     {
-        private static int quantidadeCaracteresPorLinha = 80;
+        private static int quantidadeCaracteresPorLinha = 85;
         public static void ExibirLinhaDivisoria(char caracter)
         {
             string tracoDuplo = new string(caracter, quantidadeCaracteresPorLinha);
@@ -82,6 +82,19 @@ namespace AutoCheck.ConsoleApp.Helpers
                 textoDigitado = Console.ReadLine();
             }
             return numero;
+        }
+
+        public static string RetornarEmojiConformeStatus(string status)
+        {
+            switch (status.ToLower())
+            {
+                case "bom":
+                    return "🟩";
+                case "regular":
+                    return "🟨";
+                default:
+                    return "🟥";
+            }
         }
         
     }

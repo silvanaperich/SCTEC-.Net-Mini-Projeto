@@ -26,7 +26,22 @@ namespace AutoCheck.ConsoleApp.Models
         {
             base.ExibirDadosCadastro();
             Funcoes.ExibirTextoComIndentacaoUmNivel($"Quantidade de eixos: {this.QuantidadeEixos}");
-            Funcoes.ExibirTextoComIndentacaoUmNivel($"Capacidade: {this.CapacidadeCargaToneladas:D1} ton");
+            Funcoes.ExibirTextoComIndentacaoUmNivel($"Capacidade: {this.CapacidadeCargaToneladas:F1} ton");
+        }
+
+        public override string RetornarRecomendacaoItemConformeStatus(string item, string status)
+        {
+            switch (item)
+            {
+                case "Tacógrafo":
+                    return (status == "Ruim") ? "Realizar aferição/calibração do tacógrafo no Inmetro e reparar registrador" : "Substituir disco/fita do tacógrafo e alinhar o relógio interno do dispositivo";
+                case "Sistema de Freios a Ar":
+                    return (status == "Ruim") ? "Sanar vazamentos no circuito de ar e drenar água do reservatório (risco gravíssimo)" : "Drenar o reservatório de ar e checar espessura das lonas de freio";
+                case "Trava e Lona da Caçamba":
+                    return (status == "Ruim") ? "Substituir lona rasgada e consertar travas mecânicas da caçamba" : "Reajustar esticadores da lona e lubrificar ganchos de amarração";
+                default:
+                    return base.RetornarRecomendacaoItemConformeStatus(item, status);
+            }
         }
         
     }

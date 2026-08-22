@@ -25,5 +25,20 @@ namespace AutoCheck.ConsoleApp.Models
             base.ExibirDadosCadastro();
             Funcoes.ExibirTextoComIndentacaoUmNivel($"Portas: {this.QuantidadePortas}");
         }
+
+        public override string RetornarRecomendacaoItemConformeStatus(string item, string status)
+        {
+            switch (item)
+            {
+                case "Estepe e Macaco":
+                    return (status == "Ruim") ? "Substituir estepe danificado/careca e adquirir macaco mecânico funcional" : "Calibrar pneu reserva e verificar funcionamento do macaco";
+                case "Triângulo de Sinalização":
+                    return (status == "Ruim") ? "Repor equipamento obrigatório ausente/danificado" : "Ajustar suporte de fixação do triângulo dentro do porta-malas";
+                case "Ar Condicionado Funcional":
+                    return (status == "Ruim") ? "Efetuar reparo no compressor e recarga do gás refrigerante" : "Realizar higienização dos dutos de ar e trocar o filtro de cabine";
+                default:
+                    return base.RetornarRecomendacaoItemConformeStatus(item, status);
+            }
+        }
     }
 }
