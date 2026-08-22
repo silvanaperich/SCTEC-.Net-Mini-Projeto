@@ -19,11 +19,6 @@ namespace AutoCheck.ConsoleApp.Models
             checklist.Add("Pezinho Lateral");
             return checklist;
         }
-        
-        protected override void ExibirTipoVeiculo()
-        {
-            Funcoes.ExibirTextoComIndentacaoUmNivel("Tipo: Moto");
-        }
 
         public override void ExibirDadosCadastro()
         {

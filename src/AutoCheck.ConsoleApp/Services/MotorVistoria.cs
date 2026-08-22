@@ -92,6 +92,30 @@ namespace AutoCheck.ConsoleApp.Services
             return veiculo;
         }
 
+        private void AplicarChecklistVistoria(Veiculo veiculo)
+        {
+            List<string> checklist = veiculo.ObterChecklistObrigatorio();
+            Funcoes.ExibirCabecalhoLinhaSimples("Iniciando o preenchimento do checklist de vistoria");
+
+            foreach (string itemChecklist in checklist)
+            {
+                bool itemValido = false;
+                while (!itemValido)
+                {
+                    string status = Funcoes.SolicitarValorTexto($"\"{itemChecklist}\" - Informe o Status: ");
+                    try
+                    {
+                        veiculo.AdicionarItemVistoriado(itemChecklist, status);
+                        itemValido = true;
+                    }
+                    catch (ArgumentException ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+                }
+            }
+        }
+
         public Veiculo RealizarNovaVistoria()
         {
             TipoVeiculo tipo = SolicitarTipoVeiculo();
@@ -99,12 +123,21 @@ namespace AutoCheck.ConsoleApp.Services
 
             veiculo = InicializarDadosVeiculo(tipo);
 
+            AplicarChecklistVistoria(veiculo);
+
             return veiculo;
         }
 
         public void ExibirRelatorio(List<Veiculo> veiculos)
         {
             Console.WriteLine("");
+
+            if (veiculos.Count == 0)
+            {
+                Console.WriteLine("Nenhuma vistoria realizada até o momento.");
+                return;
+            }
+
             Funcoes.ExibirCabecalho("RELATÓRIO DE VISTORIA(S)");
 
             int item = 1;
@@ -112,6 +145,13 @@ namespace AutoCheck.ConsoleApp.Services
                 Console.WriteLine($"[{item}/{veiculos.Count}] PROCESSANDO VISTORIA");
                 Funcoes.ExibirLinhaDivisoriaSimples();
                 veiculo.ExibirDadosCadastro();
+                
+                Console.WriteLine("");
+                veiculo.ExibirDadosItensInspecionados();
+                
+                Console.WriteLine("");
+                veiculo.ExibirDadosResumoPontuacao();
+
                 item++;
             }
 

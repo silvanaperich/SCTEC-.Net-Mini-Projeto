@@ -19,6 +19,13 @@ namespace AutoCheck.ConsoleApp.Helpers
             string espacos = new string(' ', quantidade);
             Console.WriteLine($"{espacos}{texto}");            
         }
+
+        public static void ExibirTextoFormatadoEstiloSumario(string textoEsquerdo, string textoDireito, char caracterPreenchimento)
+        {
+            int tamanhoPreenchimento = quantidadeCaracteresPorLinha - textoEsquerdo.Length - textoDireito.Length;
+            string preenchimento = new string(caracterPreenchimento, tamanhoPreenchimento);
+            Console.WriteLine($"{textoEsquerdo}{preenchimento}{textoDireito}");            
+        }
         
         public static void ExibirCabecalho(string titulo)
         {

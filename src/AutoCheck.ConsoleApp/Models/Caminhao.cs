@@ -22,11 +22,6 @@ namespace AutoCheck.ConsoleApp.Models
             return checklist;
         }
 
-        protected override void ExibirTipoVeiculo()
-        {
-            Funcoes.ExibirTextoComIndentacaoUmNivel("Tipo: Caminhão");
-        }
-
         public override void ExibirDadosCadastro()
         {
             base.ExibirDadosCadastro();

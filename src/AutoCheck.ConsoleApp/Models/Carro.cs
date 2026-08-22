@@ -19,11 +19,6 @@ namespace AutoCheck.ConsoleApp.Models
             checklist.Add("Ar Condicionado Funcional");
             return checklist;
         }
-        
-        protected override void ExibirTipoVeiculo()
-        {
-            Funcoes.ExibirTextoComIndentacaoUmNivel("Tipo: Carro");
-        }
 
         public override void ExibirDadosCadastro()
         {
