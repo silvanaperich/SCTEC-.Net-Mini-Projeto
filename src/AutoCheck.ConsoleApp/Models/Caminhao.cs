@@ -6,7 +6,7 @@ namespace AutoCheck.ConsoleApp.Models
     {
         public int QuantidadeEixos { get; set; }
         public double CapacidadeCargaToneladas { get; set; }
-        
+
         public Caminhao(string marca, string modelo, int ano, int quilometragem, int quantidadeEixos, double capacidadeCargaToneladas) : base(marca, modelo, ano, quilometragem)
         {
             this.QuantidadeEixos = quantidadeEixos;
@@ -43,6 +43,6 @@ namespace AutoCheck.ConsoleApp.Models
                     return base.RetornarRecomendacaoItemConformeStatus(item, status);
             }
         }
-        
+
     }
 }

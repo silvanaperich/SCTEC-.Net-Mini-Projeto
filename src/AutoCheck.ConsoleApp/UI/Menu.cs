@@ -35,9 +35,9 @@ namespace AutoCheck.ConsoleApp.UI
                         break;
                     case "0":
                         Funcoes.ExibirCabecalho("AUTOCHECK .NET - SISTEMA ENCERRADO...");
-                        break;        
+                        break;
                     default:
-                        Console.WriteLine("Opção inválida! Tente novamente.");
+                        Funcoes.ExibirTextoComDefinicaoDeCor("Opção inválida! Tente novamente.", false, ConsoleColor.Red);
                         break;
                 }
                 Console.WriteLine();

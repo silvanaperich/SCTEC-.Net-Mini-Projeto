@@ -3,7 +3,7 @@ namespace AutoCheck.ConsoleApp.Models
     public class ItemVistoria
     {
         private string[] statusValidos = new string[3] { "Bom", "Regular", "Ruim" };
-        public string Nome { get; set; }   
+        public string Nome { get; set; }
         public string Status { get; protected set; }
 
         public ItemVistoria(string nome)
@@ -29,7 +29,7 @@ namespace AutoCheck.ConsoleApp.Models
                 default:
                     this.Status = statusValidos[2];
                     break;
-            }            
+            }
         }
 
         private bool ValidarStatus(string status)

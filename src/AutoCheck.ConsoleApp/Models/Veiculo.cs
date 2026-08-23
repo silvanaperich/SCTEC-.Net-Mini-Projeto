@@ -15,8 +15,8 @@ namespace AutoCheck.ConsoleApp.Models
             this.Marca = marca;
             this.Modelo = modelo;
             this.Ano = ano;
-            this.Quilometragem = quilometragem;       
-            this.VistoriaRealizada = new List<ItemVistoria>();     
+            this.Quilometragem = quilometragem;
+            this.VistoriaRealizada = new List<ItemVistoria>();
         }
 
         public void AdicionarItemVistoriado(string nome, string status)
@@ -40,7 +40,7 @@ namespace AutoCheck.ConsoleApp.Models
             Funcoes.ExibirTextoComIndentacaoUmNivel($"Ano: {this.Ano}");
             Funcoes.ExibirTextoComIndentacaoUmNivel($"Quilometragem: {this.Quilometragem}");
         }
-        
+
         public void ExibirDadosItensInspecionados()
         {
             Console.WriteLine("");
@@ -79,12 +79,12 @@ namespace AutoCheck.ConsoleApp.Models
                     return "Veículo recusado pela concessionária";
             }
         }
-        
+
         public void ExibirDadosResumoPontuacao()
         {
             int pontuacaoMaximaPossivel = this.VistoriaRealizada.Count * 10;
             int pontuacaoObtida = 0;
-            
+
             foreach (ItemVistoria item in this.VistoriaRealizada)
             {
                 pontuacaoObtida += item.RetornarPontosPeloStatus();
@@ -92,8 +92,8 @@ namespace AutoCheck.ConsoleApp.Models
 
             double percentual = (double)pontuacaoObtida / pontuacaoMaximaPossivel * 100;
 
-            string classificacao = RetornarClassificacaoFinal(percentual);  
-            string acaoCorporativa = RetornarAcaoCorporativa(percentual);            
+            string classificacao = RetornarClassificacaoFinal(percentual);
+            string acaoCorporativa = RetornarAcaoCorporativa(percentual);
 
             Console.WriteLine("");
             Console.WriteLine("RESUMO DA PONTUAÇÃO:");
@@ -141,13 +141,13 @@ namespace AutoCheck.ConsoleApp.Models
 
             if (!contemItemStatusRegular & !contemItemStatusRuim)
             {
-                Console.WriteLine("🟢 Nenhuma pendência mecânica identificada. Veículo liberado para operação!");  
+                Funcoes.ExibirTextoComDefinicaoDeCor("🟢 Nenhuma pendência mecânica identificada. Veículo liberado para operação!", false, ConsoleColor.Green);
                 Console.WriteLine("");
                 return;
-            }          
+            }
 
             if (contemItemStatusRuim){
-                Console.WriteLine("🔴 ITENS CRÍTICOS / REPROVADOS (AÇÃO IMEDIATA):");  
+                Funcoes.ExibirTextoComDefinicaoDeCor("🔴 ITENS CRÍTICOS / REPROVADOS (AÇÃO IMEDIATA):", false, ConsoleColor.Red);
 
                 foreach (ItemVistoria item in this.VistoriaRealizada)
                 {
@@ -160,10 +160,10 @@ namespace AutoCheck.ConsoleApp.Models
                 }
 
                 Console.WriteLine("");
-            }     
+            }
 
             if (contemItemStatusRegular){
-                Console.WriteLine("🟡 ITENS DE ATENÇÃO (REVISÃO PREVENTIVA):");  
+                Funcoes.ExibirTextoComDefinicaoDeCor("🟡 ITENS DE ATENÇÃO (REVISÃO PREVENTIVA):", false, ConsoleColor.Yellow);
 
                 foreach (ItemVistoria item in this.VistoriaRealizada)
                 {

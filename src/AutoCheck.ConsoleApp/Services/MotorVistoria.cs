@@ -5,9 +5,9 @@ namespace AutoCheck.ConsoleApp.Services
 {
     public class MotorVistoria
     {
-        private enum TipoVeiculo { 
-            Carro = 1, 
-            Moto = 2, 
+        private enum TipoVeiculo {
+            Carro = 1,
+            Moto = 2,
             Caminhao = 3
         };
 
@@ -22,10 +22,10 @@ namespace AutoCheck.ConsoleApp.Services
             Console.WriteLine("3 - Caminhão");
             Console.Write("Digite a opção desejada: ");
             string opcaoEscolhida = Console.ReadLine();
-            
-            while (!Enum.TryParse(opcaoEscolhida, out tipoVeiculo))
+
+            while (!Enum.TryParse(opcaoEscolhida, out tipoVeiculo) || !Enum.IsDefined(tipoVeiculo))
             {
-                Console.Write("Opção inválida! Informe novamente o tipo de veículo desejado: ");
+                Funcoes.ExibirTextoComDefinicaoDeCor("Opção inválida! Informe novamente o tipo de veículo desejado: ", true, ConsoleColor.Red);
                 opcaoEscolhida = Console.ReadLine();
             };
 
@@ -110,7 +110,7 @@ namespace AutoCheck.ConsoleApp.Services
                     }
                     catch (ArgumentException ex)
                     {
-                        Console.WriteLine(ex.Message);
+                        Funcoes.ExibirTextoComDefinicaoDeCor(ex.Message, false, ConsoleColor.Red);
                     }
                 }
             }
@@ -134,20 +134,21 @@ namespace AutoCheck.ConsoleApp.Services
 
             if (veiculos.Count == 0)
             {
-                Console.WriteLine("Nenhuma vistoria realizada até o momento.");
+                Funcoes.ExibirTextoComDefinicaoDeCor("Nenhuma vistoria realizada até o momento.", false, ConsoleColor.Red);
                 return;
             }
 
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
             Funcoes.ExibirCabecalho("RELATÓRIO DE VISTORIA(S)");
 
             int item = 1;
             foreach (Veiculo veiculo in veiculos) {
                 Funcoes.ExibirLinhaDivisoriaSimples();
-                Console.WriteLine($"[{item}/{veiculos.Count}] PROCESSANDO VISTORIA");
+                Funcoes.ExibirTextoComDefinicaoDeCor($"[{item}/{veiculos.Count}] PROCESSANDO VISTORIA", false, ConsoleColor.DarkBlue);
                 Funcoes.ExibirLinhaDivisoriaSimples();
-                
+
                 veiculo.ExibirDadosCadastro();
-                veiculo.ExibirDadosItensInspecionados();                
+                veiculo.ExibirDadosItensInspecionados();
                 veiculo.ExibirDadosResumoPontuacao();
                 veiculo.ExibirDadosManutencaoRecomendacao();
 
@@ -155,6 +156,7 @@ namespace AutoCheck.ConsoleApp.Services
             }
 
             Funcoes.ExibirCabecalho("FIM DO PROCESSAMENTO DE VISTORIAS");
+            Console.ResetColor();
         }
     }
 }

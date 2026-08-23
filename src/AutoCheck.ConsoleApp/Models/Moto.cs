@@ -40,6 +40,6 @@ namespace AutoCheck.ConsoleApp.Models
                     return base.RetornarRecomendacaoItemConformeStatus(item, status);
             }
         }
-        
+
     }
 }
