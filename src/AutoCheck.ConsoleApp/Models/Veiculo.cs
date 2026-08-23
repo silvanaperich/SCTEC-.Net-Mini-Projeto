@@ -31,31 +31,14 @@ namespace AutoCheck.ConsoleApp.Models
             return new List<string>() {"Nível de Óleo do Motor", "Bateria e Sistema Elétrico", "Documentação Regularizada"};
         }
 
-        public virtual void ExibirDadosCadastro()
+        public int CalcularPontuacaoObtida()
         {
-            Console.WriteLine("DADOS DO VEÍCULO:");
-            Funcoes.ExibirTextoComIndentacaoUmNivel($"Tipo: {this.GetType().Name}");
-            Funcoes.ExibirTextoComIndentacaoUmNivel($"Marca: {this.Marca}");
-            Funcoes.ExibirTextoComIndentacaoUmNivel($"Modelo: {this.Modelo}");
-            Funcoes.ExibirTextoComIndentacaoUmNivel($"Ano: {this.Ano}");
-            Funcoes.ExibirTextoComIndentacaoUmNivel($"Quilometragem: {this.Quilometragem}");
+            return VistoriaRealizada.Sum(item => item.RetornarPontosPeloStatus());
         }
 
-        public void ExibirDadosItensInspecionados()
+        public string RetornarClassificacaoFinal()
         {
-            Console.WriteLine("");
-            Console.WriteLine($"AVALIAÇÃO DOS ITENS INSPECIONADOS ({this.VistoriaRealizada.Count} ITENS):");
-            Funcoes.ExibirTextoFormatadoEstiloSumario("Item", "Status", ' ');
-            foreach (ItemVistoria item in this.VistoriaRealizada)
-            {
-                string textoItem = $"{Funcoes.RetornarEmojiConformeStatus(item.Status)} {item.Nome}";
-                string textoStatus = $"{item.Status} ({item.RetornarPontosPeloStatus()} pts)";
-                Funcoes.ExibirTextoFormatadoEstiloSumario(textoItem, textoStatus, '.');
-            }
-        }
-
-        private string RetornarClassificacaoFinal(double percentual)
-        {
+            double percentual = CalcularPercentualAprovacao();
             switch (percentual)
             {
                 case >= 90:
@@ -67,8 +50,19 @@ namespace AutoCheck.ConsoleApp.Models
             }
         }
 
-        private string RetornarAcaoCorporativa(double percentual)
+        public double CalcularPercentualAprovacao()
         {
+            int pontuacaoMaxima = VistoriaRealizada.Count * 10;
+            if (pontuacaoMaxima == 0)
+            {
+                return 0;
+            }
+            return ((double)CalcularPontuacaoObtida() / pontuacaoMaxima) * 100;
+        }
+
+        public string RetornarAcaoCorporativa()
+        {
+            double percentual = CalcularPercentualAprovacao();
             switch (percentual)
             {
                 case >= 90:
@@ -78,41 +72,6 @@ namespace AutoCheck.ConsoleApp.Models
                 default:
                     return "Veículo recusado pela concessionária";
             }
-        }
-
-        public void ExibirDadosResumoPontuacao()
-        {
-            int pontuacaoMaximaPossivel = this.VistoriaRealizada.Count * 10;
-            int pontuacaoObtida = 0;
-
-            foreach (ItemVistoria item in this.VistoriaRealizada)
-            {
-                pontuacaoObtida += item.RetornarPontosPeloStatus();
-            }
-
-            double percentual = (double)pontuacaoObtida / pontuacaoMaximaPossivel * 100;
-
-            string classificacao = RetornarClassificacaoFinal(percentual);
-            string acaoCorporativa = RetornarAcaoCorporativa(percentual);
-
-            Console.WriteLine("");
-            Console.WriteLine("RESUMO DA PONTUAÇÃO:");
-            Funcoes.ExibirTextoFormatadoEstiloSumario("Pontuação Atingida", $"{pontuacaoObtida} de {pontuacaoMaximaPossivel} pontos possíveis", '.');
-            Funcoes.ExibirTextoFormatadoEstiloSumario("Percentual de Aprovação:", $"{percentual:F1}%", '.');
-            Funcoes.ExibirTextoFormatadoEstiloSumario("Classificação Final:", classificacao, '.');
-            Funcoes.ExibirTextoFormatadoEstiloSumario("Ação Corporativa:", acaoCorporativa, '.');
-        }
-
-        private bool VerificarExisteItemVistoriaPeloStatus(string status)
-        {
-            foreach (ItemVistoria item in this.VistoriaRealizada)
-            {
-                if (item.Status == status)
-                {
-                    return true;
-                }
-            }
-            return false;
         }
 
         public virtual string RetornarRecomendacaoItemConformeStatus(string item, string status)
@@ -130,53 +89,5 @@ namespace AutoCheck.ConsoleApp.Models
             }
         }
 
-        public void ExibirDadosManutencaoRecomendacao()
-        {
-            bool contemItemStatusRuim = VerificarExisteItemVistoriaPeloStatus("Ruim");
-            bool contemItemStatusRegular = VerificarExisteItemVistoriaPeloStatus("Regular");
-
-            Console.WriteLine("");
-            Console.WriteLine("RELATÓRIO DE MANUTENÇÃO E RECOMENDAÇÕES DA OFICINA:");
-            Console.WriteLine("");
-
-            if (!contemItemStatusRegular & !contemItemStatusRuim)
-            {
-                Funcoes.ExibirTextoComDefinicaoDeCor("🟢 Nenhuma pendência mecânica identificada. Veículo liberado para operação!", false, ConsoleColor.Green);
-                Console.WriteLine("");
-                return;
-            }
-
-            if (contemItemStatusRuim){
-                Funcoes.ExibirTextoComDefinicaoDeCor("🔴 ITENS CRÍTICOS / REPROVADOS (AÇÃO IMEDIATA):", false, ConsoleColor.Red);
-
-                foreach (ItemVistoria item in this.VistoriaRealizada)
-                {
-                    if (item.Status == "Ruim")
-                    {
-                        string recomendacao = RetornarRecomendacaoItemConformeStatus(item.Nome, "Ruim");
-                        Console.WriteLine($"{item.Nome}:");
-                        Funcoes.ExibirTextoComIndentacaoUmNivel($"{recomendacao}.");
-                    }
-                }
-
-                Console.WriteLine("");
-            }
-
-            if (contemItemStatusRegular){
-                Funcoes.ExibirTextoComDefinicaoDeCor("🟡 ITENS DE ATENÇÃO (REVISÃO PREVENTIVA):", false, ConsoleColor.Yellow);
-
-                foreach (ItemVistoria item in this.VistoriaRealizada)
-                {
-                    if (item.Status == "Regular")
-                    {
-                        string recomendacao = RetornarRecomendacaoItemConformeStatus(item.Nome, "Regular");
-                        Console.WriteLine($"{item.Nome}:");
-                        Funcoes.ExibirTextoComIndentacaoUmNivel($"{recomendacao}.");
-                    }
-                }
-
-                Console.WriteLine("");
-            }
-        }
     }
 }

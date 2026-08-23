@@ -20,12 +20,6 @@ namespace AutoCheck.ConsoleApp.Models
             return checklist;
         }
 
-        public override void ExibirDadosCadastro()
-        {
-            base.ExibirDadosCadastro();
-            Funcoes.ExibirTextoComIndentacaoUmNivel($"Motor: {this.Cilindradas} cc");
-        }
-
         public override string RetornarRecomendacaoItemConformeStatus(string item, string status)
         {
             switch (item)

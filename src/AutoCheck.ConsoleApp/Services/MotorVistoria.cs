@@ -1,5 +1,6 @@
 using AutoCheck.ConsoleApp.Helpers;
 using AutoCheck.ConsoleApp.Models;
+using AutoCheck.ConsoleApp.UI;
 
 namespace AutoCheck.ConsoleApp.Services
 {
@@ -147,10 +148,10 @@ namespace AutoCheck.ConsoleApp.Services
                 Funcoes.ExibirTextoComDefinicaoDeCor($"[{item}/{veiculos.Count}] PROCESSANDO VISTORIA", false, ConsoleColor.DarkBlue);
                 Funcoes.ExibirLinhaDivisoriaSimples();
 
-                veiculo.ExibirDadosCadastro();
-                veiculo.ExibirDadosItensInspecionados();
-                veiculo.ExibirDadosResumoPontuacao();
-                veiculo.ExibirDadosManutencaoRecomendacao();
+                ImprimirRelatorio.ExibirDadosCadastro(veiculo);
+                ImprimirRelatorio.ExibirDadosItensInspecionados(veiculo);
+                ImprimirRelatorio.ExibirDadosResumoPontuacao(veiculo);
+                ImprimirRelatorio.ExibirDadosManutencaoRecomendacao(veiculo);
 
                 item++;
             }
