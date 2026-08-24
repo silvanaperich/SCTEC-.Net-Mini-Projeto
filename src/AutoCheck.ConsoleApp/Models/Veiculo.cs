@@ -33,7 +33,14 @@ namespace AutoCheck.ConsoleApp.Models
 
         public int CalcularPontuacaoObtida()
         {
-            return VistoriaRealizada.Sum(item => item.RetornarPontosPeloStatus());
+            int pontuacaoObtida = 0;
+
+            foreach (ItemVistoria item in this.VistoriaRealizada)
+            {
+                pontuacaoObtida += item.RetornarPontosPeloStatus();
+            }
+
+            return pontuacaoObtida;
         }
 
         public string RetornarClassificacaoFinal()

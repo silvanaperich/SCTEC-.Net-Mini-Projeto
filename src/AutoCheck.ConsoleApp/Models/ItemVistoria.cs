@@ -34,7 +34,9 @@ namespace AutoCheck.ConsoleApp.Models
 
         private bool ValidarStatus(string status)
         {
-            return statusValidos.Contains(status, StringComparer.OrdinalIgnoreCase);
+            string statusLower = status.ToLower();
+            bool ehStatusValido = statusLower == "bom" || statusLower == "regular" || statusLower == "ruim";
+            return ehStatusValido;
         }
 
         public int RetornarPontosPeloStatus()
