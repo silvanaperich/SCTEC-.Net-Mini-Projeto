@@ -72,7 +72,7 @@ Neste projeto, que é uma aplicação de execução única/monolítica (executad
 
 ## Vídeo de apresentação ##
 
-[a gravar]
+ [Link da gravação](https://drive.google.com/file/d/1s7Aqe5qnkPHnFIc96EbyKwiX__EhGH6w/view?usp=sharing)
 
 ## Tecnologias Utilizadas ##
 
